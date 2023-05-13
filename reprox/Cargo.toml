@@ -10,3 +10,5 @@ authors = ["WhyNotDogie"]
 
 [dependencies]
 clap = { version = "4.2.7", features = ["derive"] }
+tokio = "1.28.1"
+warp = "0.3.5"
