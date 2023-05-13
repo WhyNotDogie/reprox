@@ -12,8 +12,9 @@ struct Args {
 enum Command {
     /// Start the reprox server.
     Start {
-        #[clap(long, short='l')]
-        log_mode: bool,
+        /// If the logs should also be printed to the console
+        #[clap(long, short='q')]
+        quiet: bool,
         /// The port that the TCP server will be hosted on.
         #[clap(long, short='p')]
         input_port: u32
@@ -24,9 +25,10 @@ enum Command {
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args = Args::parse();
     match args.commands {
-        Command::Start {input_port, log_mode} => {
-            if log_mode {
-                std::env::set_var("REPROX_LOG_MODE", "true");
+        Command::Start {input_port, quiet} => {
+            std::env::set_var("REPROX_LOG_MODE", "true");
+            if quiet {
+                std::env::set_var("REPROX_LOG_MODE", "false");
             }
             log!("Starting server on port: {}", input_port);
             server::run(input_port)?;
